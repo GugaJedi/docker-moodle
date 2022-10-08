@@ -1,7 +1,8 @@
 version: '3'
+name: my-moodle-environment
 services:
   mariadb:
-    container_name: mariabd
+    container_name: mariabd10-6
     image: docker.io/bitnami/mariadb:10.6
     environment:
       - MARIADB_ROOT_PASSWORD=sMvM0yFdxkQLKAk3VcVokPDBkpzJPWbN
@@ -13,9 +14,9 @@ services:
     ports:
       - 3306:3306
     networks:
-      - network
+      - skywalker-network
   moodle:
-    container_name: moodle
+    container_name: moodle4
     image: docker.io/bitnami/moodle:4
     ports:
       - "82:8080"
@@ -34,7 +35,7 @@ services:
     depends_on:
       - mariadb  
     networks:
-      - network
+      - skywalker-network
 volumes:
   mariadb_data:
     driver: local
@@ -43,6 +44,7 @@ volumes:
   moodledata_data:
     driver: local
 networks:
-  network:
-     driver: bridge
+  skywalker-network:
+    name: skywalker-network
+    driver: bridge
     
