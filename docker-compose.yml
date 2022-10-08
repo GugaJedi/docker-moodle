@@ -1,0 +1,48 @@
+version: '3'
+services:
+  mariadb:
+    container_name: mariabd
+    image: docker.io/bitnami/mariadb:10.6
+    environment:
+      - MARIADB_ROOT_PASSWORD=sMvM0yFdxkQLKAk3VcVokPDBkpzJPWbN
+      - MARIADB_DATABASE=mdldb
+      - MARIADB_USER=mdluserdb
+      - MARIADB_PASSWORD=sraqYvgA7112ZDwUTiXcunvkaRvwjcLa
+    volumes:
+      - ./mariadb:/bitnami/mariadb
+    ports:
+      - 3306:3306
+    networks:
+      - network
+  moodle:
+    container_name: moodle
+    image: docker.io/bitnami/moodle:4
+    ports:
+      - "82:8080"
+      - "8443:8443"
+    environment:
+      - MOODLE_DATABASE_HOST=mariadb
+      # - MOODLE_DB_PORT=
+      - MOODLE_DATABASE_NAME=mdldb
+      - MOODLE_DATABASE_USER=mdluserdb
+      - MOODLE_DATABASE_PASSWORD=sraqYvgA7112ZDwUTiXcunvkaRvwjcLa
+      # - ALLOW_EMPTY_PASSWORD is recommended only for development.
+    volumes:
+      # - ./bitnami:/bitnami
+      - ./moodle:/bitnami/moodle
+      - ./moodledata:/bitnami/moodledata
+    depends_on:
+      - mariadb  
+    networks:
+      - network
+volumes:
+  mariadb_data:
+    driver: local
+  moodle_data:
+    driver: local
+  moodledata_data:
+    driver: local
+networks:
+  network:
+     driver: bridge
+    
