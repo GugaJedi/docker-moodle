@@ -1,8 +1,8 @@
 version: '3'
-name: my-moodle-environment
+name: moodle
 services:
   mariadb:
-    container_name: mariabd10-6
+    container_name: mariadb
     image: docker.io/bitnami/mariadb:10.6
     environment:
       - MARIADB_ROOT_PASSWORD=sMvM0yFdxkQLKAk3VcVokPDBkpzJPWbN
@@ -16,7 +16,7 @@ services:
     networks:
       - skywalker-network
   moodle:
-    container_name: moodle4
+    container_name: moodle
     image: docker.io/bitnami/moodle:4
     ports:
       - "82:8080"
