@@ -16,6 +16,14 @@ services:
       - 3306:3306
     networks:
       - geek.net
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 512M
+        reservations:
+          cpus: '0.10'
+          memory: 128M
   moodle:
     container_name: moodle
     hostname: moodle
@@ -37,12 +45,20 @@ services:
       - mariadb  
     networks:
       - geek.net
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 512M
+        reservations:
+          cpus: '0.10'
+          memory: 128M
 volumes:
-  mariadb_data:
+  mariadb:
     driver: local
-  moodle_data:
+  moodle:
     driver: local
-  moodledata_data:
+  moodledata:
     driver: local
 networks:
   geek.net:
