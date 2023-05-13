@@ -1,33 +1,33 @@
 version: '3.1'
 name: moodle
 services:
-  # mariadb:
-  #   container_name: mariadb
-  #   hostname: mariadb
-  #   image: docker.io/bitnami/mariadb:10.6
-  #   environment:
-  #     - MARIADB_ROOT_PASSWORD=sMvM0yFdxkQLKAk3VcVokPDBkpzJPWbN
-  #     - MARIADB_DATABASE=mdldb
-  #     - MARIADB_USER=mdluserdb
-  #     - MARIADB_PASSWORD=sraqYvgA7112ZDwUTiXcunvkaRvwjcLa
-  #   volumes:
-  #     - ./mariadb:/bitnami/mariadb
-  #   ports:
-  #     - 3306:3306
-  #   networks:
-  #     - geek.net
-  #   deploy:
-  #     resources:
-  #       limits:
-  #         cpus: '0.25'
-  #         memory: 512M
-  #       reservations:
-  #         cpus: '0.10'
-  #         memory: 128M
+  mariadb:
+    container_name: mariadb
+    hostname: mariadb
+    image: docker.io/bitnami/mariadb:10.6
+    environment:
+      - MARIADB_ROOT_PASSWORD=sMvM0yFdxkQLKAk3VcVokPDBkpzJPWbN
+      - MARIADB_DATABASE=mdldb
+      - MARIADB_USER=mdluserdb
+      - MARIADB_PASSWORD=sraqYvgA7112ZDwUTiXcunvkaRvwjcLa
+    volumes:
+      - ./mariadb:/bitnami/mariadb
+    ports:
+      - 3306:3306
+    networks:
+      - geek.net
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 512M
+        reservations:
+          cpus: '0.10'
+          memory: 128M
   moodle:
     container_name: moodle
     hostname: moodle
-    image: docker.io/bitnami/moodle:4
+    image: docker.io/bitnami/moodle:4.2.0-debian-11-r2
     ports:
       - "80:8080"
       - "443:8443"
