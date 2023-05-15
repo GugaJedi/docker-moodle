@@ -53,7 +53,7 @@ services:
     environment:
       - MARIADB_ROOT_PASSWORD=sMvM0yFdxkQLKAk3VcVokPDBkpzJPWbN
       - MARIADB_DATABASE=wpdb
-      - MARIADB_USER=wpuserdb
+      - MARIADB_USER=wpuser
       - MARIADB_PASSWORD=sraqYvgA7112ZDwUTiXcunvkaRvwjcLa
     # volumes:
     #   - ./mariadb:/mariadb
@@ -80,7 +80,7 @@ services:
       - MOODLE_DATABASE_HOST=mariadb-moodle
       # - MOODLE_DB_PORT=
       - MOODLE_DATABASE_NAME=mdldb
-      - MOODLE_DATABASE_USER=appusers
+      - MOODLE_DATABASE_USER=mdluser
       - MOODLE_DATABASE_PASSWORD=sraqYvgA7112ZDwUTiXcunvkaRvwjcLa
       # - ALLOW_EMPTY_PASSWORD is recommended only for development.
     volumes:
@@ -107,9 +107,9 @@ services:
       - 8081:80
     environment:
       WORDPRESS_DB_HOST: mariadb-wordpress
-      WORDPRESS_DB_USER: wpuserdb
+      WORDPRESS_DB_USER: wpuser
       WORDPRESS_DB_PASSWORD: sraqYvgA7112ZDwUTiXcunvkaRvwjcLa
-      WORDPRESS_DB_NAME: wpdb
+      WORDPRESS_DB_NAME: wpdb-docs
     volumes:
       - ./wordpress:/var/www/html
     depends_on:
