@@ -1,8 +1,5 @@
-mariadb
-moodle
-moodledata
-backups
-bitnami
 data
 letsencrypt
+moodle
+moodledata
 wordpress

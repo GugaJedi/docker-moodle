@@ -1,5 +1,5 @@
 version: '3.8'
-name: moodle-stack
+name: web-stack
 services:
   proxymanager:
     container_name: proxymanager
@@ -30,11 +30,9 @@ services:
     environment:
       - MARIADB_ROOT_PASSWORD=sMvM0yFdxkQLKAk3VcVokPDBkpzJPWbN
       - MARIADB_DATABASE=mdldb
-      - MARIADB_USER=mdluserdb
+      - MARIADB_USER=appusers
       - MARIADB_PASSWORD=sraqYvgA7112ZDwUTiXcunvkaRvwjcLa
-      - WORDPRESS_DB_USER=wdpuserdb
-      - WORDPRESS_DB_PASSWORD=sraqYvgA7112ZDwUTiXcunvkaRvwjcLa
-      - WORDPRESS_DB_NAME=wpddb_docs
+      - MARIADB_DATABASE=wdpdbdocs
     # volumes:
     #   - ./mariadb:/mariadb
     ports:
@@ -60,7 +58,7 @@ services:
       - MOODLE_DATABASE_HOST=mariadb
       # - MOODLE_DB_PORT=
       - MOODLE_DATABASE_NAME=mdldb
-      - MOODLE_DATABASE_USER=mdluserdb
+      - MOODLE_DATABASE_USER=appusers
       - MOODLE_DATABASE_PASSWORD=sraqYvgA7112ZDwUTiXcunvkaRvwjcLa
       # - ALLOW_EMPTY_PASSWORD is recommended only for development.
     volumes:
@@ -81,17 +79,19 @@ services:
   wordpress:
     container_name: wordpress
     hostname: wordpress
-    image: wordpress
+    image: wordpress:6.2.0-fpm-alpine
     restart: always
     ports:
       - 8081:80
     environment:
       WORDPRESS_DB_HOST: mariadb
-      WORDPRESS_DB_USER: wdpuserdb
+      WORDPRESS_DB_USER: appusers
       WORDPRESS_DB_PASSWORD: sraqYvgA7112ZDwUTiXcunvkaRvwjcLa
-      WORDPRESS_DB_NAME: wpddb_docs
+      WORDPRESS_DB_NAME: wdpdbdocs
     volumes:
       - ./wordpress:/var/www/html
+    depends_on:
+      - mariadb 
     networks:
       - skywalker.net
     deploy:
