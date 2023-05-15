@@ -23,20 +23,42 @@ services:
         reservations:
           cpus: '0.10'
           memory: 128M
-  mariadb:
-    container_name: mariadb
-    hostname: mariadb
+  mariadb-moodle:
+    container_name: mariadb-moodle
+    hostname: mariadb-moddle
     image: mariadb:10.6
     environment:
       - MARIADB_ROOT_PASSWORD=sMvM0yFdxkQLKAk3VcVokPDBkpzJPWbN
       - MARIADB_DATABASE=mdldb
-      - MARIADB_USER=appusers
+      - MARIADB_USER=mdluser
       - MARIADB_PASSWORD=sraqYvgA7112ZDwUTiXcunvkaRvwjcLa
-      - MARIADB_DATABASE=wdpdbdocs
     # volumes:
     #   - ./mariadb:/mariadb
     ports:
-      - 3306:3306
+      - 33061:3306
+    networks:
+      - skywalker.net
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 512M
+        reservations:
+          cpus: '0.10'
+          memory: 128M
+  mariadb-wordpress:
+    container_name: mariadb-wordpress
+    hostname: mariadb-wordpress
+    image: mariadb:10.6
+    environment:
+      - MARIADB_ROOT_PASSWORD=sMvM0yFdxkQLKAk3VcVokPDBkpzJPWbN
+      - MARIADB_DATABASE=wpdb
+      - MARIADB_USER=wpuserdb
+      - MARIADB_PASSWORD=sraqYvgA7112ZDwUTiXcunvkaRvwjcLa
+    # volumes:
+    #   - ./mariadb:/mariadb
+    ports:
+      - 33062:3306
     networks:
       - skywalker.net
     deploy:
@@ -55,7 +77,7 @@ services:
       - "8080:8080"
       - "8443:8443"
     environment:
-      - MOODLE_DATABASE_HOST=mariadb
+      - MOODLE_DATABASE_HOST=mariadb-moodle
       # - MOODLE_DB_PORT=
       - MOODLE_DATABASE_NAME=mdldb
       - MOODLE_DATABASE_USER=appusers
@@ -65,7 +87,7 @@ services:
       - ./moodle:/bitnami/moodle
       - ./moodledata:/bitnami/moodledata
     depends_on:
-      - mariadb  
+      - mariadb-moodle  
     networks:
       - skywalker.net
     deploy:
@@ -84,14 +106,14 @@ services:
     ports:
       - 8081:80
     environment:
-      WORDPRESS_DB_HOST: mariadb
-      WORDPRESS_DB_USER: appusers
+      WORDPRESS_DB_HOST: mariadb-wordpress
+      WORDPRESS_DB_USER: wpuserdb
       WORDPRESS_DB_PASSWORD: sraqYvgA7112ZDwUTiXcunvkaRvwjcLa
-      WORDPRESS_DB_NAME: wdpdbdocs
+      WORDPRESS_DB_NAME: wpdb
     volumes:
       - ./wordpress:/var/www/html
     depends_on:
-      - mariadb 
+      - mariadb-wordpress
     networks:
       - skywalker.net
     deploy:
