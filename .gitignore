@@ -3,3 +3,6 @@ moodle
 moodledata
 backups
 bitnami
+data
+letsencrypt
+wordpress

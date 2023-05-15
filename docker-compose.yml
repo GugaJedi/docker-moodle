@@ -1,6 +1,28 @@
-version: '3.1'
+version: '3.8'
 name: moodle-stack
 services:
+  proxymanager:
+    container_name: proxymanager
+    hostname: proxymanager
+    image: 'jc21/nginx-proxy-manager:latest'
+    restart: unless-stopped
+    ports:
+      - '80:80'
+      - '81:81'
+      - '443:443'
+    volumes:
+      - ./data:/data
+      - ./letsencrypt:/etc/letsencrypt
+    networks:
+      - skywalker.net
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 512M
+        reservations:
+          cpus: '0.10'
+          memory: 128M
   mariadb:
     container_name: mariadb
     hostname: mariadb
@@ -10,6 +32,9 @@ services:
       - MARIADB_DATABASE=mdldb
       - MARIADB_USER=mdluserdb
       - MARIADB_PASSWORD=sraqYvgA7112ZDwUTiXcunvkaRvwjcLa
+      - WORDPRESS_DB_USER=wdpuserdb
+      - WORDPRESS_DB_PASSWORD=sraqYvgA7112ZDwUTiXcunvkaRvwjcLa
+      - WORDPRESS_DB_NAME=wpddb_docs
     # volumes:
     #   - ./mariadb:/mariadb
     ports:
@@ -29,8 +54,8 @@ services:
     hostname: moodle
     image: docker.io/bitnami/moodle:4.2.0-debian-11-r2
     ports:
-      - "80:8080"
-      - "443:8443"
+      - "8080:8080"
+      - "8443:8443"
     environment:
       - MOODLE_DATABASE_HOST=mariadb
       # - MOODLE_DB_PORT=
@@ -43,6 +68,30 @@ services:
       - ./moodledata:/bitnami/moodledata
     depends_on:
       - mariadb  
+    networks:
+      - skywalker.net
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 512M
+        reservations:
+          cpus: '0.10'
+          memory: 128M
+  wordpress:
+    container_name: wordpress
+    hostname: wordpress
+    image: wordpress
+    restart: always
+    ports:
+      - 8081:80
+    environment:
+      WORDPRESS_DB_HOST: mariadb
+      WORDPRESS_DB_USER: wdpuserdb
+      WORDPRESS_DB_PASSWORD: sraqYvgA7112ZDwUTiXcunvkaRvwjcLa
+      WORDPRESS_DB_NAME: wpddb_docs
+    volumes:
+      - ./wordpress:/var/www/html
     networks:
       - skywalker.net
     deploy:
