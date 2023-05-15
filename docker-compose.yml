@@ -1,21 +1,21 @@
 version: '3.1'
-name: moodle
+name: moodle-stack
 services:
   mariadb:
     container_name: mariadb
     hostname: mariadb
-    image: docker.io/bitnami/mariadb:10.6
+    image: mariadb:10.6
     environment:
       - MARIADB_ROOT_PASSWORD=sMvM0yFdxkQLKAk3VcVokPDBkpzJPWbN
       - MARIADB_DATABASE=mdldb
       - MARIADB_USER=mdluserdb
       - MARIADB_PASSWORD=sraqYvgA7112ZDwUTiXcunvkaRvwjcLa
-    volumes:
-      - ./mariadb:/bitnami/mariadb
+    # volumes:
+    #   - ./mariadb:/mariadb
     ports:
       - 3306:3306
     networks:
-      - geek.net
+      - skywalker.net
     deploy:
       resources:
         limits:
@@ -41,10 +41,10 @@ services:
     volumes:
       - ./moodle:/bitnami/moodle
       - ./moodledata:/bitnami/moodledata
-    # depends_on:
-    #   - mariadb  
+    depends_on:
+      - mariadb  
     networks:
-      - geek.net
+      - skywalker.net
     deploy:
       resources:
         limits:
@@ -61,6 +61,6 @@ volumes:
   moodledata:
     driver: local
 networks:
-  geek.net:
-    name: geek.net
+  skywalker.net:
+    name: skywalker.net
     driver: bridge
